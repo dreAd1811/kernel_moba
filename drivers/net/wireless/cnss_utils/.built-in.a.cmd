@@ -1,1 +1,0 @@
-cmd_drivers/net/wireless/cnss_utils/built-in.a :=  rm -f drivers/net/wireless/cnss_utils/built-in.a; llvm-ar rcSTPD drivers/net/wireless/cnss_utils/built-in.a drivers/net/wireless/cnss_utils/cnss_utils.o drivers/net/wireless/cnss_utils/wlan_firmware_service_v01.o

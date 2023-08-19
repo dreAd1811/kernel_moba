@@ -1,1 +1,0 @@
-cmd_techpack/camera/drivers/cam_jpeg/jpeg_hw/built-in.a :=  rm -f techpack/camera/drivers/cam_jpeg/jpeg_hw/built-in.a; llvm-ar rcSTPD techpack/camera/drivers/cam_jpeg/jpeg_hw/built-in.a techpack/camera/drivers/cam_jpeg/jpeg_hw/jpeg_enc_hw/built-in.a techpack/camera/drivers/cam_jpeg/jpeg_hw/jpeg_dma_hw/built-in.a techpack/camera/drivers/cam_jpeg/jpeg_hw/cam_jpeg_hw_mgr.o

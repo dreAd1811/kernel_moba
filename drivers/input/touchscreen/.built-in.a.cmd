@@ -1,1 +1,0 @@
-cmd_drivers/input/touchscreen/built-in.a :=  rm -f drivers/input/touchscreen/built-in.a; llvm-ar rcSTPD drivers/input/touchscreen/built-in.a drivers/input/touchscreen/of_touchscreen.o drivers/input/touchscreen/st/built-in.a drivers/input/touchscreen/synaptics_dsx/built-in.a drivers/input/touchscreen/focaltech_touch/built-in.a drivers/input/touchscreen/touch_gesture_inf.o

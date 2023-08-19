@@ -1,1 +1,0 @@
-cmd_drivers/input/touchscreen/st/built-in.a :=  rm -f drivers/input/touchscreen/st/built-in.a; llvm-ar rcSTPD drivers/input/touchscreen/st/built-in.a drivers/input/touchscreen/st/fts.o drivers/input/touchscreen/st/fts_gui.o drivers/input/touchscreen/st/fts_driver_test.o drivers/input/touchscreen/st/fts_aoi_event.o drivers/input/touchscreen/st/fts_lib/built-in.a

@@ -1,1 +1,0 @@
-cmd_drivers/vservices/built-in.a :=  rm -f drivers/vservices/built-in.a; llvm-ar rcSTPD drivers/vservices/built-in.a drivers/vservices/session.o drivers/vservices/devio.o drivers/vservices/core_client.o drivers/vservices/core_server.o drivers/vservices/transport/built-in.a drivers/vservices/protocol/built-in.a

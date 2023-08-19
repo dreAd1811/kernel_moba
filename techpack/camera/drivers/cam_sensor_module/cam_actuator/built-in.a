@@ -1,9 +1,0 @@
-!<thin>
-//                                              62        `
-cam_actuator_dev.o/
-cam_actuator_core.o/
-cam_actuator_soc.o/
-
-/0              0           0     0     644     282376    `
-/20             0           0     0     644     315104    `
-/41             0           0     0     644     242984    `

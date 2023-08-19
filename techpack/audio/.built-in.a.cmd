@@ -1,1 +1,0 @@
-cmd_techpack/audio/built-in.a :=  rm -f techpack/audio/built-in.a; llvm-ar rcSTPD techpack/audio/built-in.a techpack/audio/soc/built-in.a techpack/audio/dsp/built-in.a techpack/audio/ipc/built-in.a techpack/audio/asoc/built-in.a

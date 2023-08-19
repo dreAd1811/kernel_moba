@@ -1,1 +1,0 @@
-cmd_drivers/input/misc/aw8697/built-in.a :=  rm -f drivers/input/misc/aw8697/built-in.a; llvm-ar rcSTPD drivers/input/misc/aw8697/built-in.a drivers/input/misc/aw8697/aw8697.o drivers/input/misc/aw8697/aw8697x.o drivers/input/misc/aw8697/aw8697_cali.o

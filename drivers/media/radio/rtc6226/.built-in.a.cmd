@@ -1,1 +1,0 @@
-cmd_drivers/media/radio/rtc6226/built-in.a :=  rm -f drivers/media/radio/rtc6226/built-in.a; llvm-ar rcSTPD drivers/media/radio/rtc6226/built-in.a drivers/media/radio/rtc6226/radio-rtc6226-i2c.o drivers/media/radio/rtc6226/radio-rtc6226-common.o

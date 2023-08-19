@@ -1,1 +1,0 @@
-cmd_security/built-in.a :=  rm -f security/built-in.a; llvm-ar rcSTPD security/built-in.a security/keys/built-in.a security/commoncap.o security/min_addr.o security/security.o security/inode.o security/selinux/built-in.a security/smack/built-in.a security/lsm_audit.o security/apparmor/built-in.a security/pfe/built-in.a security/integrity/built-in.a

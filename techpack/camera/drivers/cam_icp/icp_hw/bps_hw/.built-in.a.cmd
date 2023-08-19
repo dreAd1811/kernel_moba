@@ -1,1 +1,0 @@
-cmd_techpack/camera/drivers/cam_icp/icp_hw/bps_hw/built-in.a :=  rm -f techpack/camera/drivers/cam_icp/icp_hw/bps_hw/built-in.a; llvm-ar rcSTPD techpack/camera/drivers/cam_icp/icp_hw/bps_hw/built-in.a techpack/camera/drivers/cam_icp/icp_hw/bps_hw/bps_dev.o techpack/camera/drivers/cam_icp/icp_hw/bps_hw/bps_core.o techpack/camera/drivers/cam_icp/icp_hw/bps_hw/bps_soc.o

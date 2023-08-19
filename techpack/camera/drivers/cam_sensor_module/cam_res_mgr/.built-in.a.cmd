@@ -1,1 +1,0 @@
-cmd_techpack/camera/drivers/cam_sensor_module/cam_res_mgr/built-in.a :=  rm -f techpack/camera/drivers/cam_sensor_module/cam_res_mgr/built-in.a; llvm-ar rcSTPD techpack/camera/drivers/cam_sensor_module/cam_res_mgr/built-in.a techpack/camera/drivers/cam_sensor_module/cam_res_mgr/cam_res_mgr.o

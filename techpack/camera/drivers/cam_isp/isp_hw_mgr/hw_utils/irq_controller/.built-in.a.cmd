@@ -1,1 +1,0 @@
-cmd_techpack/camera/drivers/cam_isp/isp_hw_mgr/hw_utils/irq_controller/built-in.a :=  rm -f techpack/camera/drivers/cam_isp/isp_hw_mgr/hw_utils/irq_controller/built-in.a; llvm-ar rcSTPD techpack/camera/drivers/cam_isp/isp_hw_mgr/hw_utils/irq_controller/built-in.a techpack/camera/drivers/cam_isp/isp_hw_mgr/hw_utils/irq_controller/cam_irq_controller.o

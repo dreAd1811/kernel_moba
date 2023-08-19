@@ -1,1 +1,0 @@
-cmd_drivers/vservices/protocol/serial/built-in.a :=  rm -f drivers/vservices/protocol/serial/built-in.a; llvm-ar rcSTPD drivers/vservices/protocol/serial/built-in.a drivers/vservices/protocol/serial/client.o drivers/vservices/protocol/serial/server.o
