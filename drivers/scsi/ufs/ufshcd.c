@@ -9293,16 +9293,13 @@ out:
 	 */
 	if (ret && !ufshcd_eh_in_progress(hba) && !hba->pm_op_in_progress)
 		pm_runtime_put_sync(hba->dev);
-<<<<<<< HEAD
 
 #if defined(CONFIG_UFSFEATURE)
 	ufsf_reset(&hba->ufsf);
 #endif
-=======
 		ufshcd_exit_clk_scaling(hba);
 		ufshcd_hba_exit(hba);
 	}
->>>>>>> 0592c2178e3c (scsi: ufshcd: Fix NULL pointer dereference for in ufshcd_init)
 
 	trace_ufshcd_init(dev_name(hba->dev), ret,
 		ktime_to_us(ktime_sub(ktime_get(), start)),
@@ -10143,7 +10140,6 @@ static void ufshcd_hba_exit(struct ufs_hba *hba)
 	if (hba->is_powered) {
 		ufshcd_variant_hba_exit(hba);
 		ufshcd_setup_vreg(hba, false);
-<<<<<<< HEAD
 		if (ufshcd_is_clkscaling_supported(hba)) {
 			if (hba->devfreq)
 				ufshcd_suspend_clkscaling(hba);
@@ -10155,13 +10151,11 @@ static void ufshcd_hba_exit(struct ufs_hba *hba)
 		if (hba->recovery_wq)
 			destroy_workqueue(hba->recovery_wq);
 		ufshcd_disable_clocks(hba, false);
-=======
 		ufshcd_suspend_clkscaling(hba);
 		if (ufshcd_is_clkscaling_supported(hba))
 			if (hba->devfreq)
 				ufshcd_suspend_clkscaling(hba);
 		ufshcd_setup_clocks(hba, false);
->>>>>>> 0592c2178e3c (scsi: ufshcd: Fix NULL pointer dereference for in ufshcd_init)
 		ufshcd_setup_hba_vreg(hba, false);
 		hba->is_powered = false;
 	}

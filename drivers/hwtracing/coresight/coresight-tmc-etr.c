@@ -1427,7 +1427,6 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 	}
 
 	drvdata->mode = CS_MODE_SYSFS;
-<<<<<<< HEAD
 
 	if (drvdata->out_mode == TMC_ETR_OUT_MODE_MEM ||
 	    (drvdata->out_mode == TMC_ETR_OUT_MODE_USB
@@ -1435,9 +1434,7 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
 		tmc_etr_enable_hw(drvdata);
 
 	drvdata->enable = true;
-=======
 	tmc_etr_enable_hw(drvdata, drvdata->sysfs_buf);
->>>>>>> a0e0ec0a5544 (coresight: tmc-etr: Handle driver mode specific ETR buffers)
 out:
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
@@ -1638,16 +1635,13 @@ int tmc_read_prepare_etr(struct tmc_drvdata *drvdata)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	if (drvdata->byte_cntr && drvdata->byte_cntr->enable) {
 		ret = -EINVAL;
 		goto out;
 	}
-=======
 	/* Disable the TMC if we are trying to read from a running session */
 	if (drvdata->mode == CS_MODE_SYSFS)
 		tmc_etr_disable_hw(drvdata);
->>>>>>> a0e0ec0a5544 (coresight: tmc-etr: Handle driver mode specific ETR buffers)
 
 	/* Disable the TMC if need be */
 	if (drvdata->mode == CS_MODE_SYSFS) {
@@ -1684,15 +1678,11 @@ int tmc_read_unprepare_etr(struct tmc_drvdata *drvdata)
 		 * buffer. Since the tracer is still enabled drvdata::buf can't
 		 * be NULL.
 		 */
-<<<<<<< HEAD
-		tmc_etr_enable_hw(drvdata);
 
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
 		coresight_enable_all_source_link();
 		spin_lock_irqsave(&drvdata->spinlock, flags);
-=======
 		tmc_etr_enable_hw(drvdata, drvdata->sysfs_buf);
->>>>>>> a0e0ec0a5544 (coresight: tmc-etr: Handle driver mode specific ETR buffers)
 	} else {
 		/*
 		 * The ETR is not tracing and the buffer was just read.

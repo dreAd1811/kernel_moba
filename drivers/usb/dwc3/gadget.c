@@ -1689,7 +1689,6 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
 			if (!r->trb)
 				goto out0;
 
-<<<<<<< HEAD
 			if (r->num_pending_sgs) {
 				struct dwc3_trb *trb = r->trb;
 				int i = 0;
@@ -1737,7 +1736,6 @@ out1:
 	dbg_ep_dequeue(dep->number, req);
 	/* giveback the request */
 
-=======
 	dwc3_gadget_giveback(dep, req, -ECONNRESET);
 
 out0:

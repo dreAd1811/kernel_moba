@@ -933,11 +933,7 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
 	unsigned long	flags;
 	int		i, num;
 	union {
-<<<<<<< HEAD
-		__u8	block[CHACHA_BLOCK_SIZE];
-=======
 		__u8	block[CHACHA20_BLOCK_SIZE];
->>>>>>> ad28c2ba4318 (crypto: chacha20 - Fix chacha20_block() keystream alignment (again))
 		__u32	key[8];
 	} buf;
 
@@ -984,11 +980,7 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
 }
 
 static void _extract_crng(struct crng_state *crng,
-<<<<<<< HEAD
-			  __u8 out[CHACHA_BLOCK_SIZE])
-=======
 			  __u8 out[CHACHA20_BLOCK_SIZE])
->>>>>>> ad28c2ba4318 (crypto: chacha20 - Fix chacha20_block() keystream alignment (again))
 {
 	unsigned long v, flags;
 
@@ -1005,11 +997,7 @@ static void _extract_crng(struct crng_state *crng,
 	spin_unlock_irqrestore(&crng->lock, flags);
 }
 
-<<<<<<< HEAD
-static void extract_crng(__u8 out[CHACHA_BLOCK_SIZE])
-=======
 static void extract_crng(__u8 out[CHACHA20_BLOCK_SIZE])
->>>>>>> ad28c2ba4318 (crypto: chacha20 - Fix chacha20_block() keystream alignment (again))
 {
 	struct crng_state *crng = NULL;
 
@@ -1027,11 +1015,7 @@ static void extract_crng(__u8 out[CHACHA20_BLOCK_SIZE])
  * enough) to mutate the CRNG key to provide backtracking protection.
  */
 static void _crng_backtrack_protect(struct crng_state *crng,
-<<<<<<< HEAD
-				    __u8 tmp[CHACHA_BLOCK_SIZE], int used)
-=======
 				    __u8 tmp[CHACHA20_BLOCK_SIZE], int used)
->>>>>>> ad28c2ba4318 (crypto: chacha20 - Fix chacha20_block() keystream alignment (again))
 {
 	unsigned long	flags;
 	__u32		*s, *d;
@@ -1050,11 +1034,7 @@ static void _crng_backtrack_protect(struct crng_state *crng,
 	spin_unlock_irqrestore(&crng->lock, flags);
 }
 
-<<<<<<< HEAD
-static void crng_backtrack_protect(__u8 tmp[CHACHA_BLOCK_SIZE], int used)
-=======
 static void crng_backtrack_protect(__u8 tmp[CHACHA20_BLOCK_SIZE], int used)
->>>>>>> ad28c2ba4318 (crypto: chacha20 - Fix chacha20_block() keystream alignment (again))
 {
 	struct crng_state *crng = NULL;
 
@@ -1069,13 +1049,8 @@ static void crng_backtrack_protect(__u8 tmp[CHACHA20_BLOCK_SIZE], int used)
 
 static ssize_t extract_crng_user(void __user *buf, size_t nbytes)
 {
-<<<<<<< HEAD
-	ssize_t ret = 0, i = CHACHA_BLOCK_SIZE;
-	__u8 tmp[CHACHA_BLOCK_SIZE] __aligned(4);
-=======
 	ssize_t ret = 0, i = CHACHA20_BLOCK_SIZE;
 	__u8 tmp[CHACHA20_BLOCK_SIZE] __aligned(4);
->>>>>>> ad28c2ba4318 (crypto: chacha20 - Fix chacha20_block() keystream alignment (again))
 	int large_request = (nbytes > 256);
 
 	while (nbytes) {
@@ -1654,11 +1629,7 @@ static void _warn_unseeded_randomness(const char *func_name, void *caller,
  */
 static void _get_random_bytes(void *buf, int nbytes)
 {
-<<<<<<< HEAD
-	__u8 tmp[CHACHA_BLOCK_SIZE] __aligned(4);
-=======
 	__u8 tmp[CHACHA20_BLOCK_SIZE] __aligned(4);
->>>>>>> ad28c2ba4318 (crypto: chacha20 - Fix chacha20_block() keystream alignment (again))
 
 	trace_get_random_bytes(nbytes, _RET_IP_);
 
