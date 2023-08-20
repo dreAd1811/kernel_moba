@@ -1747,8 +1747,6 @@ static int f2fs_mpage_readpages(struct address_space *mapping,
 			zero_user_segment(page, 0, PAGE_SIZE);
 			unlock_page(page);
 		}
-<<<<<<< HEAD
-=======
 
 		/*
 		 * This page will go to BIO.  Do we need to send this
@@ -2650,11 +2648,7 @@ repeat:
 		}
 	}
 
-<<<<<<< HEAD
-	f2fs_wait_on_page_writeback(page, DATA, false, true);
-=======
 	f2fs_wait_on_page_writeback(page, DATA, false);
->>>>>>> 23ad83c399b0 (f2fs: avoid wrong decrypted data from disk)
 
 	if (len == PAGE_SIZE || PageUptodate(page))
 		return 0;
