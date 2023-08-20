@@ -2393,7 +2393,6 @@ void idle_notifier_call_chain(unsigned long val)
 }
 EXPORT_SYMBOL_GPL(idle_notifier_call_chain);
 
-enum cpu_mitigations cpu_mitigations __ro_after_init = CPU_MITIGATIONS_AUTO;
 /*
  * These are used for a global "mitigations=" cmdline option for toggling
  * optional CPU mitigations.

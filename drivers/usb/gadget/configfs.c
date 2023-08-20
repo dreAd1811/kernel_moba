@@ -1683,7 +1683,6 @@ static void android_disconnect(struct usb_gadget *gadget)
 static const struct usb_gadget_driver configfs_driver_template = {
 	.bind           = configfs_composite_bind,
 	.unbind         = configfs_composite_unbind,
-<<<<<<< HEAD
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
 	.setup          = android_setup,
 	.reset          = android_disconnect,

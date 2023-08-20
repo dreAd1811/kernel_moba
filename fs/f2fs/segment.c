@@ -630,9 +630,9 @@ int f2fs_issue_flush(struct f2fs_sb_info *sbi, nid_t ino)
 		return 0;
 
 	if (!test_opt(sbi, FLUSH_MERGE)) {
-		atomic_inc(&fcc->issing_flush);
+		atomic_inc(&fcc->queued_flush);
 		ret = submit_flush_wait(sbi, ino);
-		atomic_dec(&fcc->issing_flush);
+		atomic_dec(&fcc->queued_flush);
 		atomic_inc(&fcc->issued_flush);
 		return ret;
 	}
@@ -3330,7 +3330,7 @@ void f2fs_wait_on_block_writeback(struct inode *inode, block_t blkaddr)
 	if (!f2fs_post_read_required(inode))
 		return;
 
-	if (!is_valid_data_blkaddr(sbi, blkaddr))
+	if (!__is_valid_data_blkaddr(blkaddr))
 		return;
 
 	cpage = find_lock_page(META_MAPPING(sbi), blkaddr);

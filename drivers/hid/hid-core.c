@@ -611,11 +611,8 @@ static int hid_parser_main(struct hid_parser *parser, struct hid_item *item)
 	__u32 data;
 	int ret;
 
-<<<<<<< HEAD
-=======
 	hid_concatenate_last_usage_page(parser);
 
->>>>>>> be41df88a568 (HID: core: check whether Usage Page item is after Usage ID items)
 	data = item_udata(item);
 
 	switch (item->tag) {
@@ -825,11 +822,8 @@ static int hid_scan_main(struct hid_parser *parser, struct hid_item *item)
 	__u32 data;
 	int i;
 
-<<<<<<< HEAD
-=======
 	hid_concatenate_last_usage_page(parser);
 
->>>>>>> be41df88a568 (HID: core: check whether Usage Page item is after Usage ID items)
 	data = item_udata(item);
 
 	switch (item->tag) {

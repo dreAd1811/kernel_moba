@@ -1388,7 +1388,7 @@ static int get_data_block_dio(struct inode *inode, sector_t iblock,
 	return __get_data_block(inode, iblock, bh_result, create,
 						F2FS_GET_BLOCK_DIO, NULL,
 						f2fs_rw_hint_to_seg_type(
-							inode->i_write_hint));
+							inode->i_write_hint),false);
 }
 
 static int get_data_block_bmap(struct inode *inode, sector_t iblock,
@@ -1747,50 +1747,6 @@ static int f2fs_mpage_readpages(struct address_space *mapping,
 			zero_user_segment(page, 0, PAGE_SIZE);
 			unlock_page(page);
 		}
-
-		/*
-		 * This page will go to BIO.  Do we need to send this
-		 * BIO off first?
-		 */
-		if (bio && (last_block_in_bio != block_nr - 1 ||
-			!__same_bdev(F2FS_I_SB(inode), block_nr, bio))) {
-submit_and_realloc:
-			__submit_bio(F2FS_I_SB(inode), bio, DATA);
-			bio = NULL;
-		}
-		if (bio == NULL) {
-			bio = f2fs_grab_read_bio(inode, block_nr, nr_pages,
-					is_readahead ? REQ_RAHEAD : 0);
-			if (IS_ERR(bio)) {
-				bio = NULL;
-				goto set_error_page;
-			}
-		}
-
-		/*
-		 * If the page is under writeback, we need to wait for
-		 * its completion to see the correct decrypted data.
-		 */
-		f2fs_wait_on_block_writeback(inode, block_nr);
-
-		if (bio_add_page(bio, page, blocksize, 0) < blocksize)
-			goto submit_and_realloc;
-
-		ClearPageError(page);
-		last_block_in_bio = block_nr;
-		goto next_page;
-set_error_page:
-		SetPageError(page);
-		zero_user_segment(page, 0, PAGE_SIZE);
-		unlock_page(page);
-		goto next_page;
-confused:
-		if (bio) {
-			__submit_bio(F2FS_I_SB(inode), bio, DATA);
-			bio = NULL;
-		}
-		unlock_page(page);
->>>>>>> 23ad83c399b0 (f2fs: avoid wrong decrypted data from disk)
 next_page:
 		if (pages)
 			put_page(page);
@@ -2648,7 +2604,7 @@ repeat:
 		}
 	}
 
-	f2fs_wait_on_page_writeback(page, DATA, false);
+	f2fs_wait_on_page_writeback(page, DATA, false, true);
 
 	if (len == PAGE_SIZE || PageUptodate(page))
 		return 0;
@@ -2935,12 +2891,7 @@ int f2fs_release_page(struct page *page, gfp_t wait)
 		return 0;
 
 	clear_cold_data(page);
-<<<<<<< HEAD
 	f2fs_clear_page_private(page);
-=======
-	set_page_private(page, 0);
-	ClearPagePrivate(page);
->>>>>>> e7f81efae3b5 (f2fs: fix to spread clear_cold_data())
 	return 1;
 }
 

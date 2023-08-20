@@ -115,13 +115,6 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
 	f2fs_update_time(sbi, REQ_TIME);
 
 	trace_f2fs_vm_page_mkwrite(page, DATA);
-mapped:
-	/* fill the page */
-	f2fs_wait_on_page_writeback(page, DATA, false);
-
-	/* wait for GCed page writeback via META_MAPPING */
-	f2fs_wait_on_block_writeback(inode, dn.data_blkaddr);
-
 out_sem:
 	up_read(&F2FS_I(inode)->i_mmap_sem);
 
